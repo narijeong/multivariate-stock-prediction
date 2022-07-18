@@ -21,10 +21,11 @@ class Aggregate(Layer):
         b = inputs[1]
         return add([tf.matmul(a, self.w), b])
 
-from keras.layers import Input
-from keras.layers import Dense
-visible = Input(shape=(1170,11))
-h1 = Dense(11)(visible) 
-h2 = Dense(11)(visible) 
-Aggregate(11)([h1, h2])
+# test
+# from keras.layers import Input
+# from keras.layers import Dense
+# visible = Input(shape=(1170,11))
+# h1 = Dense(11)(visible) 
+# h2 = Dense(11)(visible) 
+# Aggregate(11)([h1, h2])
 
