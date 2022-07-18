@@ -3,7 +3,7 @@ from keras.layers import Dense
 from keras.layers import LSTM
 
 
-def load_data();
+def load_data():
     pass
 
 def feature_mapping():
