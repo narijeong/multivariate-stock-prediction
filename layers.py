@@ -1,5 +1,8 @@
+'''
+custom layers
+'''
+from wsgiref.validate import InputWrapper
 from keras.layers import Layer
-from keras.layers import Dense
 from keras.layers import add
 import tensorflow as tf
 
