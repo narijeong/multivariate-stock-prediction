@@ -132,13 +132,12 @@ def load_data(data_path, fname, tra_date, val_date, tes_date, seq=2,
                 tes_gt[ins_ind, 0] = (data_EOD[tic_ind][date_ind][-2] + 1) / 2
                 ins_ind += 1
     return tra_pv, tra_wd, tra_gt, val_pv, val_wd, val_gt, tes_pv, tes_wd, tes_gt
-    
 
 if __name__ == '__main__':
     # TEST
-    _, _, tra_gt, _, _, val_gt, _, _, tes_gt = load_cla_data(
-        '/home/ffl/nus/MM/fintech/tweet_stock/data/stocknet-dataset/price/ourpped',
-        '2014-01-02', '2015-08-03', '2015-10-01'
+    _, _, tra_gt, _, _, val_gt, _, _, tes_gt = load_data(
+        '/Users/narijeong/Dev/multivariate-stock-prediction/data/kdd17/index','SPY_processed.csv',
+        '2007-02-14', '2015-01-02', '2016-01-04'
     )
     print(np.sum(tra_gt))
     print(np.sum(val_gt))
