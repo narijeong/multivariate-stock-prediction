@@ -10,9 +10,11 @@ from keras.layers import Dense
 from keras.layers import LSTM
 from keras.layers import BatchNormalization
 from keras.models import Model
+from keras.layers import MultiHeadAttention
 from keras.utils.vis_utils import plot_model
 
 from attention import Attention
+from keract import get_activations
 from aggregate import *
 from load import load_data
 
@@ -53,23 +55,23 @@ def time_axis_attention(model_input, feature_dim, units):
     return x
 
 def context_aggregation(index_data, stock_data):
-
-    i = 0
     stock_model = [None]*len(stock_data)
     model = [None]*len(stock_data)
     
     index_input = Input(shape=(args.time_steps, g_params['feature_dim']))
     stock_input = Input(shape=(args.time_steps, g_params['feature_dim']))
 
-    index = time_axis_attention(index_input, g_params['feature_dim'], args.units)
-    index = Model(inputs=index_input, outputs=index)
+    context_aggregation_result = []
 
-    for i, stock in enumerate(stock_data[:1]):
+    index_model = time_axis_attention(index_input, g_params['feature_dim'], args.units)
+    index_model = Model(inputs=index_input, outputs=index_model)
+
+    for i, stock in enumerate(stock_data[:3]):
         stock_model[i] = time_axis_attention(stock_input, g_params['feature_dim'], args.units)
         stock_model[i] = Model(inputs=stock_input, outputs=stock_model[i])
-        merged = Aggregate(g_params['feature_dim'])([index.output, stock_model[i].output])
-        z = Dense(1, activation="sigmoid")(merged)
-        model[i] = Model(inputs=[index.input, stock_model[i].input], outputs=z)
+        merged = Aggregate(g_params['feature_dim'])([index_model.output, stock_model[i].output])
+        # # z = Dense(1, activation="sigmoid")(merged)
+        model[i] = Model(inputs=[index_model.input, stock_model[i].input], outputs=merged)
         model[i].compile(loss='mae', optimizer='adam')
         plot_model(model[i], to_file='model_plot.png', show_shapes=True, show_layer_names=True)
 
@@ -77,38 +79,35 @@ def context_aggregation(index_data, stock_data):
                             validation_data=([index_data['X_val'],stock_data[i]['X_val']], stock_data[i]['y_val']),
                             epochs=args.epochs
                             )
-        print(history.history)
+        # print(history.history)
+        context_aggregation_result.append(model[i].predict([index_data['X_train'],stock_data[i]['X_train']]))
 
-        y_pred = model[i].predict([index_data['X_test'][:-1], stock_data[i]['X_test']])
-        print(y_pred)
-
-        # context vector
-        # intermediate_layer_model = Model(inputs=model.input, outputs=model.layers[-1].output)
-        # intermediate_output = intermediate_layer_model('X_train').numpy()
-        # return intermediate_output
-
-def context_aggregation_evaluate(model,X_test, y_pred):
-
-    y_pred = model.predict([index_data['X_test'][:-1], stock_data[0]['X_test']])
-
+    return context_aggregation_result
     
+def reshape_data(input):
+    result = [[None] for x in range(len(input[0][1]))]
+    print(len(input[0][0]))
+    print(len(input[0][1]))
+    for i in range(len(input[0][1])): #1980
+        for j in range(len(input[0][0])): #50
+        
+            result[i][j] = input[j][i]
 
-# # aggregate market context with individual stock context
-# # summary the indivisual context with a global trend
-# def context_aggregation():
-#     pass
-# # learn the stock correlation by a transformer
-# def data_axis_attention():
-#     pass
+    # print(result.shape)
+    return result 
 
-
-
-# if __name__ == '__main__':
-#     print('main.py')
-#     load_data()
-#     time_axis_attention()
-#     context_aggregation()
-#     data_axis_attention()
+def data_axis_attention(context_aggregation_result):
+    print(context_aggregation_result[19])
+    print(context_aggregation_result[19].shape)
+    
+    model_input = Input(shape=(50,11))
+    x = MultiHeadAttention(num_heads=2, key_dim=2)(model_input)
+    # x = onlineartransformation()
+    x = Dense(1, activation='sigmoid')(x)
+    model = Model(input=model_input, output = x)
+    return model
+    
+    
 
 if __name__ == '__main__':
     desc = 'the DTML model'
@@ -146,7 +145,9 @@ if __name__ == '__main__':
     # print(index_data['X_train'].shape)
     # print(g_params['feature_dim'])
     # print(stock_data[0]['X_train'].shape)
-    context_aggregation(index_data, stock_data)
+    context_aggregation_result = context_aggregation(index_data, stock_data)
+    context_aggregation_result = reshape_data(context_aggregation_result)
+    # data_axis_attention(context_aggregation_result)
     # print(index_data['X_test'].shape)
     # print(stock_data[0]['X_test'].shape)
     # print(stock_data[0]['y_train'])
