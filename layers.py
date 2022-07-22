@@ -1,7 +1,3 @@
-'''
-custom layers
-'''
-from wsgiref.validate import InputWrapper
 from keras.layers import Layer
 from keras.layers import add
 import tensorflow as tf
@@ -23,3 +19,4 @@ class Aggregate(Layer):
         a = inputs[0]
         b = inputs[1]
         return add([tf.matmul(a, self.w), b])
+

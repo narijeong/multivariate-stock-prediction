@@ -85,16 +85,18 @@ def context_aggregation(index_data, stock_data):
     return context_aggregation_result
     
 def reshape_data(input):
-    result = [[None] for x in range(len(input[0][1]))]
-    print(len(input[0][0]))
-    print(len(input[0][1]))
-    for i in range(len(input[0][1])): #1980
-        for j in range(len(input[0][0])): #50
+    print(len(input))
+    print(len(input[0]))
+    # result = [[None] for x in range(len(input[0][1]))]
+    # print(len(input[0][0]))
+    # print(len(input[0][1]))
+    # for i in range(len(input[0][1])): #1980
+    #     for j in range(len(input[0][0])): #50
         
-            result[i][j] = input[j][i]
+    #         result[i][j] = input[j][i]
 
-    # print(result.shape)
-    return result 
+    # # print(result.shape)
+    # return result 
 
 def data_axis_attention(context_aggregation_result):
     print(context_aggregation_result[19])
