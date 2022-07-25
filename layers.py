@@ -18,5 +18,7 @@ class Aggregate(Layer):
     def call(self, inputs):  # Defines the computation from inputs to outputs
         a = inputs[0]
         b = inputs[1]
+        print(a.shape)
+        print(b.shape)
         return add([tf.matmul(a, self.w), b])
 

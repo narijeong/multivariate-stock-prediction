@@ -1,5 +1,6 @@
 from multiprocessing.dummy import active_children
 import os
+from re import I
 import sys
 import logging
 import argparse
@@ -66,20 +67,35 @@ def construct_model():
 
     index_model = time_axis_attention(index_input, params['feature_dim'], args.units)
     index_model = Model(inputs=index_input, outputs=index_model)
-    stock_model = time_axis_attention(stock_input, params['feature_dim'], args.units)
-    stock_model = Model(inputs=stock_input, outputs=stock_model)
 
-    context_aggregation = Aggregate(params['feature_dim'])([index_model.output, stock_model.output])
-    # transformed = Lambda(transform_features, output_shape=(params['sampe_size'], params['ticker_size'], params['feature_dim']), arguments={'ticker_size':params['ticker_size']})(context_aggregation)
-    transformed = Lambda(transform_features, arguments={'ticker_size':params['ticker_size']})(context_aggregation)
+    stock_models = [None]*params['ticker_size']
+    context_aggregations= [None]*params['ticker_size']
+    time_axis_models = [None]*params['ticker_size']
 
-    # data_axis_attention = MultiHeadAttention()(context_aggregation)
-    # outputs = Dense(1, activation='sigmoid')(data_axis_attention)
-    model = Model(inputs=[index_model.input, stock_model.input], outputs=transformed)
+    transformed = np.empty([params['sample_size'], params['ticker_size']])
+
+    print(transformed)
+    for i in range(params['ticker_size']):
+        stock_models[i] = time_axis_attention(stock_input, params['feature_dim'], args.units)
+        stock_models[i] = Model(inputs=stock_input, outputs=stock_models[i])
+        context_aggregations[i] = Aggregate(32)([index_model.output, stock_models[i].output])
+        for j in range(params['sample_size']):
+            print(Lambda(lambda x: x[j,:])(context_aggregations[i]))
+            # transformed[j,i] = Lambda(lambda x: x[j,:])(context_aggregations[i])
+
+    # # transformed = Lambda(transform_features, output_shape=(params['sampe_size'], params['ticker_size'], params['feature_dim']), arguments={'ticker_size':params['ticker_size']})(context_aggregation)
+    # transformed = Lambda(transform_features, arguments={'ticker_size':params['ticker_size']})(context_aggregation)
+
+    # # data_axis_attention = MultiHeadAttention()(context_aggregation)
+    # # outputs = Dense(1, activation='sigmoid')(data_axis_attention)
+
+    # model = Model(inputs=[index_model.input, stock_model.input], outputs=index_model)
+
+    model = index_model
     model.compile(loss='mae', optimizer='adam')
-    plot_model(model, to_file='model_plot2.png', show_shapes=True, show_layer_names=True)
+    plot_model(model, to_file='model_plot3.png', show_shapes=True, show_layer_names=True)
 
-    return model
+    # return model
 
 def time_axis_attention(model_input, feature_dim, units):
     x = Dense(feature_dim, activation='tanh')(model_input)
@@ -94,7 +110,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--path', help='path of data', type=str,
                         default='./data/kdd17')
     parser.add_argument('-t', '--time_steps', help='length of history', type=int,
-                        default=2)
+                        default=5)
     parser.add_argument('-u', '--units', help='number of hidden units in lstm',
                         type=int, default=32)
     parser.add_argument('-e', '--epochs', help='epochs', type=int, default=5)
@@ -121,7 +137,7 @@ if __name__ == '__main__':
         "feature_dim": 11,
         "ticker_size": 50,
         "batch_size": 2,
-        "sampe_size": 2,
+        "sample_size": 1980,
     }
-    model = construct_model()
-    train(model)
+    construct_model()
+    # train(model)
