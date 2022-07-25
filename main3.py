@@ -19,7 +19,7 @@ from keras.models import Model
 
 from keras.utils.vis_utils import plot_model
 
-from attention import Attention
+from myattention import Attention
 from layers import Aggregate
 from load import load_data, load_cla_data
 
@@ -69,19 +69,29 @@ def construct_model():
     index_model = Model(inputs=index_input, outputs=index_model)
 
     stock_models = [None]*params['ticker_size']
-    context_aggregations= [None]*params['ticker_size']
-    time_axis_models = [None]*params['ticker_size']
-
-    transformed = np.empty([params['sample_size'], params['ticker_size']])
-
-    print(transformed)
+    context_aggs= [None]*params['ticker_size']
+    context_agg_models = [None]*params['ticker_size']
+    
     for i in range(params['ticker_size']):
         stock_models[i] = time_axis_attention(stock_input, params['feature_dim'], args.units)
         stock_models[i] = Model(inputs=stock_input, outputs=stock_models[i])
-        context_aggregations[i] = Aggregate(32)([index_model.output, stock_models[i].output])
-        for j in range(params['sample_size']):
-            print(Lambda(lambda x: x[j,:])(context_aggregations[i]))
-            # transformed[j,i] = Lambda(lambda x: x[j,:])(context_aggregations[i])
+        context_aggs[i] = Aggregate(32)([index_model.output, stock_models[i].output])
+        context_agg_models[i] = Model(inputs=index_input, outputs=context_aggs[i])
+
+
+    # for j in range(params['sample_size']):
+    #     for i in range(params['ticker_size']):   
+    #         # print(Lambda(lambda x: x[j,:])(context_aggregations[i]))
+    #         Lambda(lambda x: x[j,:])(context_aggregations[i]) # i stock 1,2,3,4 day j: 1
+    #     # transformed[j,i] = Lambda(lambda x: x[j,:])(context_aggregations[i])
+
+    # for i in range(params['ticker_size']):   
+    #     for j in range(params['sample_size']):
+    #         Lambda(lambda x: x[j,:])(context_aggregations[i])
+
+
+    # data_axis_input = Input(shape=(params['ticker_size'], args.units))
+
 
     # # transformed = Lambda(transform_features, output_shape=(params['sampe_size'], params['ticker_size'], params['feature_dim']), arguments={'ticker_size':params['ticker_size']})(context_aggregation)
     # transformed = Lambda(transform_features, arguments={'ticker_size':params['ticker_size']})(context_aggregation)
