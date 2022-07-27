@@ -4,8 +4,8 @@ import tensorflow as tf
 
 class Aggregate(Layer):
 
-    def __init__(self, units=32):
-        super(Aggregate, self).__init__()
+    def __init__(self, units=32, name="aggregate"):
+        super(Aggregate, self).__init__(name=name)
         self.units = units
 
     def build(self, input_shape):  # Create the state of the layer (weights)

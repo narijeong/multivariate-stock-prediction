@@ -29,37 +29,66 @@ def train(model):
 
     # tra_pv, tra_wd, tra_gt, val_pv, val_wd, val_gt, tes_pv, tes_wd, tes_gt = load_cla_data(args.path,
     #     tra_date, val_date, tes_date, seq=args.time_steps)
-    x1 = np.array([[[1,2,3,4,5,6,7,8,9,10,11],
-                   [1,2,3,4,5,6,7,8,9,10,11]],
+    time_steps=3
+    feature_dim = 11
+    sample_dim=5
+    ticker_size = 2
+    index = np.array([[[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
                    [[1,2,3,4,5,6,7,8,9,10,11],
-                   [1,2,3,4,5,6,7,8,9,10,11]],])
-    x2 = np.array([[[1,2,3,4,5,6,7,8,9,10,11],
-                   [1,2,3,4,5,6,7,8,9,10,11]],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
                    [[1,2,3,4,5,6,7,8,9,10,11],
-                   [1,2,3,4,5,6,7,8,9,10,11]],])
-    y = np.array([3,4])
-    history = model.fit(x=[x1,x2], y=y, epochs=5)
-    print(history.history)
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],])
+    stock1 = np.array([[[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],])
+    stock2 = np.array([[[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],
+                   [[1,2,3,4,5,6,7,8,9,10,11],
+                   [2,3,4,5,6,7,8,9,10,11,12],
+                   [3,4,5,6,7,8,9,10,11,12,13]],])
+    stocks = [stock1, stock2]
+    y = np.array([14,15,16,17,18])
 
-    # history = model.fit(x =[index_data['X_train'],stock_data[i]['X_train']], y=stock_data[i]['y_train'],
-    #                     validation_data=([index_data['X_val'],stock_data['X_val']], stock_data[i]['y_val']),
-    #                     epochs=args.epochs
-    #                     )
+    models = []
+    index_input = Input(shape=(args.time_steps, params['feature_dim']))
+    stock_input = Input(shape=(args.time_steps, params['feature_dim']))
+    index_model = time_axis_attention(index_input, feature_dim, units)
+    for i, stock in enumerate(stocks):
+        model[i] = model.fit(x=[index,stock2], y=y, epochs=5)
 
-def transform_features(features, ticker_size):
-    transformed  = np.zeros(params['sample_size'], ticker_size, params['feature_dim'],
-                              dtype=np.float32)
-    # print(features)
-    # context_vector_size = features.shape[1]
-    # sampe_size = params['sampe_size']
-    # print('sample_size', params['sampe_size'])
-    for i in range(params['sample_size']):
-        stock_context_vector = []
-        for j in range(ticker_size, ticker_size):
-            temp = features[i+j]
-            stock_context_vector.append(temp)
-        transformed = np.add(transformed, stock_context_vector)
-    return transformed
+
 
 def construct_model():
     index_input = Input(shape=(args.time_steps, params['feature_dim']))
@@ -144,11 +173,15 @@ if __name__ == '__main__':
     val_date = '2015-01-02'
     tes_date = '2016-01-04'
     
+    # params = {
+    #     "feature_dim": 11,
+    #     "ticker_size": 50,
+    #     "batch_size": 2,
+    #     "sample_size": 1980,
+    # }
     params = {
         "feature_dim": 11,
-        "ticker_size": 50,
-        "batch_size": 2,
-        "sample_size": 1980,
+        "ticker_size": 2,
+        "sample_size": 5,
     }
-    construct_model()
     # train(model)
