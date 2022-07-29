@@ -23,3 +23,6 @@ python pred_lstm.py -p ./data/kdd17/ -l 5 -u 4 -l2 0.001 -a 0 -f 1
 ### installation
 brew install graphviz
 pip install -r requirements.txt
+
+### 
+ipython kernel install --user --name=ml

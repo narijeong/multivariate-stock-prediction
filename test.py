@@ -12,3 +12,5 @@ https://pyimagesearch.com/2019/02/04/keras-multiple-inputs-and-mixed-data/
 
 transformer
 https://wikidocs.net/103802
+
+https://wikidocs.net/162098

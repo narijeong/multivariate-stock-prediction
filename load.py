@@ -133,11 +133,12 @@ def load_data(data_path, fname, tra_date, val_date, tes_date, seq=2,
                 ins_ind += 1
     return tra_pv, tra_wd, tra_gt, val_pv, val_wd, val_gt, tes_pv, tes_wd, tes_gt
 
-def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
+def load_cla_data(data_path, fname, tra_date, val_date, tes_date, seq=2,
                   date_format='%Y-%m-%d'):
-    fnames = [fname for fname in os.listdir(data_path) if
-              os.path.isfile(os.path.join(data_path, fname))]
-    print(len(fnames), ' tickers selected')
+    # fnames = [fname for fname in os.listdir(data_path) if
+    #           os.path.isfile(os.path.join(data_path, fname))]
+    # print(len(fnames), ' tickers selected')
+    fnames = [fname]
 
     data_EOD = []
     for index, fname in enumerate(fnames):
@@ -266,13 +267,31 @@ def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
                 ins_ind += 1
 
     return tra_pv, tra_wd, tra_gt, val_pv, val_wd, val_gt, tes_pv, tes_wd, tes_gt
-if __name__ == '__main__':
-    # TEST
-    _, _, tra_gt, _, _, val_gt, _, _, tes_gt = load_data(
-        '/Users/narijeong/Dev/multivariate-stock-prediction/data/kdd17/index','SPY_processed.csv',
-        '2007-02-14', '2015-01-02', '2016-01-04'
-    )
-    print(np.sum(tra_gt))
-    print(np.sum(val_gt))
-    print(np.sum(tes_gt))
-    print(np.sum(tes_gt) / 3720)
+
+# if __name__ == '__main__':
+#     # TEST
+#     _, _, tra_gt, _, _, val_gt, _, _, tes_gt = load_data(
+#         '/Users/narijeong/Dev/multivariate-stock-prediction/data/kdd17/index','SPY_processed.csv',
+#         '2007-02-14', '2015-01-02', '2016-01-04'
+#     )
+#     print(np.sum(tra_gt))
+#     print(np.sum(val_gt))
+#     print(np.sum(tes_gt))
+#     print(np.sum(tes_gt) / 3720)
+
+
+tra_date = '2007-01-03'
+val_date = '2015-01-02'
+tes_date = '2016-01-04'
+data_path='./data/kdd17/preprocessed/'
+# fname = 'AAPL.csv'
+
+# data_path = './data/index/preprocessed/'
+# fname = 'snp500_p.csv'
+# load_cla_data(data_path, fname, tra_date, val_date, tes_date, date_format='%Y-%m-%d')
+
+fnames = [fname for fname in os.listdir(data_path) if
+      os.path.isfile(os.path.join(data_path, fname))]
+
+for fname in fnames:
+    load_cla_data(data_path, fname, tra_date, val_date, tes_date, date_format='%Y-%m-%d')
