@@ -19,4 +19,3 @@ class Aggregate(Layer):
         a = inputs[0]
         b = inputs[1]
         return add([tf.matmul(a, self.w), b])
-

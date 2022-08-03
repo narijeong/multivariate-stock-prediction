@@ -1,47 +1,74 @@
-class MultiHeadAttention(tf.keras.layers.Layer):
-  def __init__(self, d_model, num_heads):
-    super(MultiHeadAttention, self).__init__()
-    self.num_heads = num_heads
-    self.d_model = d_model
+# referencedf from: https://gist.github.com/ekreutz/160070126d5e2261a939c4ddf6afb642
 
-    assert d_model % self.num_heads == 0
+import tensorflow as tf
+import keras
+from keras.layers import Dense
+class DotProductAttention(keras.layers.Layer):
+    def __init__(self, use_scale=True, **kwargs):
+        super(DotProductAttention, self).__init__(**kwargs)
+        self.use_scale = use_scale
 
-    self.depth = d_model // self.num_heads
+    def build(self, input_shape):
+        query_shape = input_shape[0]
+        if self.use_scale:
+            dim_k = tf.cast(query_shape[-1], tf.float32)
+            self.scale = 1 / tf.sqrt(dim_k)
+        else:
+            self.scale = None
 
-    self.wq = tf.keras.layers.Dense(d_model)
-    self.wk = tf.keras.layers.Dense(d_model)
-    self.wv = tf.keras.layers.Dense(d_model)
+    def call(self, input):
+        query, key, value = input
+        score = tf.matmul(query, key, transpose_b=True)
+        if self.scale is not None:
+            score *= self.scale
+        return tf.matmul(tf.nn.softmax(score), value)
 
-    self.dense = tf.keras.layers.Dense(d_model)
+class MultiHeadAttention(keras.layers.Layer):
+    def __init__(self, h=8, **kwargs):
+        super(MultiHeadAttention, self).__init__(**kwargs)
+        self.h = h
 
-  def split_heads(self, x, batch_size):
-    """Split the last dimension into (num_heads, depth).
-    Transpose the result such that the shape is (batch_size, num_heads, seq_len, depth)
-    """
-    x = tf.reshape(x, (batch_size, -1, self.num_heads, self.depth))
-    return tf.transpose(x, perm=[0, 2, 1, 3])
+    def build(self, input_shape):
+        query_shape, key_shape, value_shape = input_shape
+        d_model = query_shape[-1]
 
-  def call(self, v, k, q, mask):
-    batch_size = tf.shape(q)[0]
+        # Note: units can be anything, but this is what the paper does
+        units = d_model // self.h
 
-    q = self.wq(q)  # (batch_size, seq_len, d_model)
-    k = self.wk(k)  # (batch_size, seq_len, d_model)
-    v = self.wv(v)  # (batch_size, seq_len, d_model)
+        self.layersQ = []
+        for _ in range(self.h):
+            layer = Dense(units, activation=None, use_bias=False)
+            layer.build(query_shape)
+            self.layersQ.append(layer)
 
-    q = self.split_heads(q, batch_size)  # (batch_size, num_heads, seq_len_q, depth)
-    k = self.split_heads(k, batch_size)  # (batch_size, num_heads, seq_len_k, depth)
-    v = self.split_heads(v, batch_size)  # (batch_size, num_heads, seq_len_v, depth)
+        self.layersK = []
+        for _ in range(self.h):
+            layer = Dense(units, activation=None, use_bias=False)
+            layer.build(key_shape)
+            self.layersK.append(layer)
 
-    # scaled_attention.shape == (batch_size, num_heads, seq_len_q, depth)
-    # attention_weights.shape == (batch_size, num_heads, seq_len_q, seq_len_k)
-    scaled_attention, attention_weights = scaled_dot_product_attention(
-        q, k, v, mask)
+        self.layersV = []
+        for _ in range(self.h):
+            layer = Dense(units, activation=None, use_bias=False)
+            layer.build(value_shape)
+            self.layersV.append(layer)
 
-    scaled_attention = tf.transpose(scaled_attention, perm=[0, 2, 1, 3])  # (batch_size, seq_len_q, num_heads, depth)
+        self.attention = DotProductAttention(True)
 
-    concat_attention = tf.reshape(scaled_attention,
-                                  (batch_size, -1, self.d_model))  # (batch_size, seq_len_q, d_model)
+        self.out = Dense(d_model, activation=None, use_bias=False)
+        self.out.build((query_shape[0], query_shape[1], self.h * units))
 
-    output = self.dense(concat_attention)  # (batch_size, seq_len_q, d_model)
+    def call(self, input):
+        query, key, value = input
 
-    return output, attention_weights
+        q = [layer(query) for layer in self.layersQ]
+        k = [layer(key) for layer in self.layersK]
+        v = [layer(value) for layer in self.layersV]
+
+        # Head is in multi-head, just like the paper
+        head = [self.attention([q[i], k[i], v[i]]) for i in range(self.h)]
+
+        out = self.out(tf.concat(head, -1))
+        return out
+
+

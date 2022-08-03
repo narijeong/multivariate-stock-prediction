@@ -8,9 +8,16 @@
 # Aggregate()([h1, h2])
 
 
+from numpy import nested_iters
+
+
 https://pyimagesearch.com/2019/02/04/keras-multiple-inputs-and-mixed-data/
 
 transformer
 https://wikidocs.net/103802
 
 https://wikidocs.net/162098
+
+
+attention is all you need 
+https://velog.io/@stapers/%EB%85%BC%EB%AC%B8-%EC%8A%A4%ED%84%B0%EB%94%94-Week4-5-Attention-is-All-You-Need

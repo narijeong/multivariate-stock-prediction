@@ -64,9 +64,9 @@ class Attention(object if debug_flag else Layer):
         attention_weights = self.attention_weight(score)
         # (batch_size, time_steps, hidden_size) dot (batch_size, time_steps) => (batch_size, hidden_size)
         context_vector = self.context_vector([inputs, attention_weights])
-        # pre_activation = self.attention_output([context_vector, h_t])
-        # attention_vector = self.attention_vector(pre_activation)
-        return context_vector
+        pre_activation = self.attention_output([context_vector, h_t])
+        attention_vector = self.attention_vector(pre_activation)
+        return attention_vector
 
     def get_config(self):
         """
