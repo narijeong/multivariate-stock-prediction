@@ -3,7 +3,10 @@ import copy
 import numpy as np
 import os
 import random
-from sklearn.utils import shuffle
+import pickle
+from datetime import datetime
+# from sklearn.utils import shuffle
+# 
 import tensorflow as tf
 from time import time
 from keras import backend, activations
@@ -15,6 +18,7 @@ from attention import Attention
 from multiheadattention import MultiHeadAttention
 from load_data import load_cla_data
 from evaluator import evaluate
+
 
 class DTML:
     def __init__(self, data_path, model_path, model_save_path, parameters, steps=1, epochs=50,
@@ -118,7 +122,7 @@ class DTML:
         print('final shape', x.shape)
         model = Model(inputs=input_shape, outputs=x)
         model.compile(loss='mae', optimizer='adam')
-        plot_model(model, to_file='./image/model.png', show_shapes=True, show_layer_names=True)
+        plot_model(model, to_file='./images/model.png', show_shapes=True, show_layer_names=True)
         return model
 
     def get_latent_rep(self):
@@ -329,21 +333,33 @@ class DTML:
         sess.close()
         tf.reset_default_graph()
 
+    # train and save the model 
     def train(self, tune_para=False):
 
         model = self.create_model()
         print('tra_pv', self.tra_pv.shape)
         print('tra_gt', self.tra_gt.shape)
+        history = None
         if args.model == 'lstm':
-            model.fit(x=self.tra_pv, y=self.tra_gt ,epochs=1)
+            history = model.fit(x=self.tra_pv, y=self.tra_gt, validation_data=(self.val_pv, self.val_gt), epochs=1)
         
         if args.model == 'dtml':
-            model.fit(x =self.tra_pv, y=self.tra_gt ,epochs=1)
+            history = model.fit(x=self.tra_pv, y=self.tra_gt, validation_data=(self.val_pv, self.val_gt), epochs=1)
 
-        # tes_pred = model.predict(self.tes_pv)
+        print(history.history)
+        print("Evaluate on test data")
+        results = model.evaluate(self.tes_pv, self.tes_gt, batch_size=args.epochs)
+        print("test loss, test acc:", results)
+        # now = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+        # model.save('./models/dtml_' + now)
+        # model.save('my_model')
+
+        print('Evaluation')
+        tes_pred = model.predict(self.tes_pv)
+        print(tes_pred)
+
         # test_perf = evaluate(tes_pred, self.tes_gt)
         # print('\tTest per:', test_perf)
-
 
         # best_valid_pred = np.zeros(self.val_gt.shape, dtype=float)
         # best_test_pred = np.zeros(self.tes_gt.shape, dtype=float)
@@ -487,8 +503,8 @@ if __name__ == '__main__':
     parser.add_argument('-s', '--step', help='steps to make prediction',
                         type=int, default=1)
     parser.add_argument('-b', '--batch_size', help='batch size', type=int,
-                        default=1024)
-    parser.add_argument('-e', '--epoch', help='epoch', type=int, default=150)
+                        default=1)
+    parser.add_argument('-e', '--epochs', help='epochs', type=int, default=150)
     parser.add_argument('-r', '--learning_rate', help='learning rate',
                         type=float, default=1e-2)
     parser.add_argument('-g', '--gpu', type=int, default=0, help='use gpu')
@@ -549,7 +565,7 @@ if __name__ == '__main__':
         model_save_path=args.model_save_path,
         parameters=parameters,
         steps=args.step,
-        epochs=args.epoch, batch_size=args.batch_size, gpu=args.gpu,
+        epochs=args.epochs, batch_size=args.batch_size, gpu=args.gpu,
         tra_date=tra_date, val_date=val_date, tes_date=tes_date, att=args.att,
         hinge=args.hinge_lose, fix_init=args.fix_init, adv=args.adv,
         reload=args.reload

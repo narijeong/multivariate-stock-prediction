@@ -1,0 +1,6 @@
+[2022-08-12 13:50:16] INFO (nni.experiment) Creating experiment, Experiment ID: rc7kwaq0
+[2022-08-12 13:50:16] INFO (nni.experiment) Starting web server...
+[2022-08-12 13:50:17] INFO (nni.experiment) Setting up...
+[2022-08-12 13:50:17] INFO (nni.experiment) Web portal URLs: http://127.0.0.1:8080 http://172.20.10.12:8080 http://10.250.16.254:8080
+[2022-08-12 13:50:17] INFO (nni.tools.nnictl.launcher) To stop experiment run "nnictl stop rc7kwaq0" or "nnictl stop --all"
+[2022-08-12 13:50:17] INFO (nni.tools.nnictl.launcher) Reference: https://nni.readthedocs.io/en/stable/reference/nnictl.html

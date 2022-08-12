@@ -19,3 +19,21 @@ pip install -r requirements.txt
 '''
 ipython kernel install --user --name=ml
 '''
+
+### start NNI UI
+```
+nnictl create --config config.yaml
+```
+
+### stop NNI 
+```
+nnictl stop --all
+```
+
+### NNI 관련 파일
+1. config.yaml (nni 설정파일)
+2. pred_nni.py (모델 생성및 nni hyper parameter 지정)
+
+
+### NNI run
+- threshold 사용하여 (하락, threshold 구간 = 0) , (상승 = 1) 결과 = VmMI9

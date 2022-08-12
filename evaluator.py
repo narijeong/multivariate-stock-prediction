@@ -5,6 +5,8 @@ from sklearn.metrics import accuracy_score, matthews_corrcoef, mean_squared_erro
 
 
 def evaluate(prediction, ground_truth, hinge=False, reg=False):
+    if prediction.shape[-1] == 1:
+        prediction = np.squeeze(prediction)
     assert ground_truth.shape == prediction.shape, 'shape mis-match'
     performance = {}
     if reg:

@@ -1,0 +1,77 @@
+[2022-08-12 15:50:13] INFO (main) Start NNI manager
+[2022-08-12 15:50:13] INFO (NNIDataStore) Datastore initialization done
+[2022-08-12 15:50:13] INFO (RestServer) Starting REST server at port 8080, URL prefix: "/"
+[2022-08-12 15:50:13] INFO (RestServer) REST server started.
+[2022-08-12 15:50:13] ERROR (NNIRestHandler) TypeError: Cannot read properties of undefined (reading 'id')
+    at /Users/narijeong/opt/anaconda3/envs/ml/lib/python3.9/site-packages/nni_node/rest_server/restHandler.js:312:45
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2022-08-12 15:50:13] INFO (NNIManager) Starting experiment: es8rblhx
+[2022-08-12 15:50:13] INFO (NNIManager) Setup training service...
+[2022-08-12 15:50:14] INFO (LocalTrainingService) Construct local machine training service.
+[2022-08-12 15:50:14] INFO (NNIManager) Setup tuner...
+[2022-08-12 15:50:14] INFO (NNIManager) Change NNIManager status from: INITIALIZED to: RUNNING
+[2022-08-12 15:50:14] INFO (NNIManager) Add event listeners
+[2022-08-12 15:50:14] INFO (LocalTrainingService) Run local machine training service.
+[2022-08-12 15:50:14] INFO (NNIManager) NNIManager received command from dispatcher: ID, 
+[2022-08-12 15:50:14] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 1, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}
+[2022-08-12 15:50:14] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}
+[2022-08-12 15:50:19] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 0,
+  hyperParameters: {
+    value: '{"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 1, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 15:50:19] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 1,
+  hyperParameters: {
+    value: '{"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 15:50:29] INFO (NNIManager) Trial job PKZj3 status changed from WAITING to RUNNING
+[2022-08-12 15:50:29] INFO (NNIManager) Trial job KHCtI status changed from WAITING to RUNNING
+[2022-08-12 15:50:45] INFO (NNIManager) Trial job PKZj3 status changed from RUNNING to SUCCEEDED
+[2022-08-12 15:50:45] INFO (NNIManager) Trial job KHCtI status changed from RUNNING to SUCCEEDED
+[2022-08-12 15:50:45] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 2, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 1, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}
+[2022-08-12 15:50:45] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 3, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}
+[2022-08-12 15:50:50] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 2,
+  hyperParameters: {
+    value: '{"parameter_id": 2, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 1, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 15:50:50] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 3,
+  hyperParameters: {
+    value: '{"parameter_id": 3, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 15:51:00] INFO (NNIManager) Trial job GZbzw status changed from WAITING to RUNNING
+[2022-08-12 15:51:00] INFO (NNIManager) Trial job OYOa8 status changed from WAITING to RUNNING
+[2022-08-12 15:51:10] INFO (NNIManager) Trial job GZbzw status changed from RUNNING to SUCCEEDED
+[2022-08-12 15:51:10] INFO (NNIManager) NNIManager received command from dispatcher: NO, {"parameter_id": 4, "parameter_source": "algorithm", "parameters": "", "parameter_index": 0}
+[2022-08-12 15:51:10] INFO (NNIManager) Change NNIManager status from: RUNNING to: TUNER_NO_MORE_TRIAL
+[2022-08-12 15:51:15] INFO (NNIManager) Trial job OYOa8 status changed from RUNNING to SUCCEEDED
+[2022-08-12 15:51:15] INFO (NNIManager) NNIManager received command from dispatcher: NO, {"parameter_id": 5, "parameter_source": "algorithm", "parameters": "", "parameter_index": 0}
+[2022-08-12 17:21:41] ERROR (NNIManager) Error: SQLITE_READONLY: attempt to write a readonly database
+[2022-08-12 17:21:41] INFO (NNIManager) Change NNIManager status from: TUNER_NO_MORE_TRIAL to: ERROR
+[2022-08-12 17:37:20] INFO (ShutdownManager) Initiate shutdown: SIGTERM
+[2022-08-12 17:37:20] INFO (RestServer) Stopping REST server.
+[2022-08-12 17:37:20] INFO (NNIManager) Change NNIManager status from: ERROR to: STOPPING
+[2022-08-12 17:37:20] INFO (NNIManager) Stopping experiment, cleaning up ...
+[2022-08-12 17:37:20] INFO (RestServer) REST server stopped.
+[2022-08-12 17:37:21] INFO (LocalTrainingService) Stopping local machine training service...
+[2022-08-12 17:37:21] ERROR (ShutdownManager) Error during shutting down NniManager: [Error: SQLITE_READONLY: attempt to write a readonly database] {
+  cause: [Error: SQLITE_READONLY: attempt to write a readonly database] {
+    errno: 8,
+    code: 'SQLITE_READONLY'
+  }
+}
+[2022-08-12 17:37:21] INFO (ShutdownManager) Shutdown complete.

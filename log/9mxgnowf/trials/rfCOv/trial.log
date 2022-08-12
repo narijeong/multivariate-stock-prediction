@@ -1,0 +1,3 @@
+[2022-08-12 13:31:38] PRINT get params
+[2022-08-12 13:31:38] PRINT {'batch_size': 256, 'epochs': 2, 'seq': 15, 'path': './data/kdd17/preprocessed/'}
+[2022-08-12 13:31:38] PRINT 49  tickers selected

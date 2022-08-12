@@ -1,0 +1,6 @@
+[2022-08-12 12:16:40] INFO (nni.experiment) Creating experiment, Experiment ID: 516ane9s
+[2022-08-12 12:16:40] INFO (nni.experiment) Starting web server...
+[2022-08-12 12:16:41] INFO (nni.experiment) Setting up...
+[2022-08-12 12:16:41] INFO (nni.experiment) Web portal URLs: http://127.0.0.1:8080 http://172.20.10.12:8080 http://10.250.16.254:8080
+[2022-08-12 12:16:41] INFO (nni.tools.nnictl.launcher) To stop experiment run "nnictl stop 516ane9s" or "nnictl stop --all"
+[2022-08-12 12:16:41] INFO (nni.tools.nnictl.launcher) Reference: https://nni.readthedocs.io/en/stable/reference/nnictl.html

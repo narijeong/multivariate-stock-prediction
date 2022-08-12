@@ -1,0 +1,6 @@
+[2022-08-12 18:07:31] INFO (nni.experiment) Creating experiment, Experiment ID: wcxp6vn9
+[2022-08-12 18:07:31] INFO (nni.experiment) Starting web server...
+[2022-08-12 18:07:32] INFO (nni.experiment) Setting up...
+[2022-08-12 18:07:32] INFO (nni.experiment) Web portal URLs: http://127.0.0.1:8080
+[2022-08-12 18:07:32] INFO (nni.tools.nnictl.launcher) To stop experiment run "nnictl stop wcxp6vn9" or "nnictl stop --all"
+[2022-08-12 18:07:32] INFO (nni.tools.nnictl.launcher) Reference: https://nni.readthedocs.io/en/stable/reference/nnictl.html

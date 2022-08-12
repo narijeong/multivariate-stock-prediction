@@ -1,0 +1,6 @@
+[2022-08-08 16:25:43] INFO (nni.tuner.tpe/MainThread) Using random seed 1818075987
+[2022-08-08 16:25:43] INFO (nni.runtime.msg_dispatcher_base/MainThread) Dispatcher started
+[2022-08-08 16:26:13] INFO (nni.common.hpo_utils.dedup/Thread-1) Tuning algorithm generated duplicate parameter: {('batch_size',): 1, ('epochs',): 0, ('seq',): 0, ('path',): 0}
+[2022-08-08 16:26:13] INFO (nni.common.hpo_utils.dedup/Thread-1) Use grid search for deduplication.
+[2022-08-08 16:26:13] INFO (nni.tuner.gridsearch/Thread-1) Grid initialized, size: (2×2×1×1) = 4
+[2022-08-08 16:26:33] INFO (nni.tuner.gridsearch/Thread-1) Search space has been fully explored

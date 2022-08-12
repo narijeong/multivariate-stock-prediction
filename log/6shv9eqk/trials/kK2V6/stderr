@@ -1,0 +1,12 @@
+2022-08-12 12:14:25.971069: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 96, in <module>
+    main(params)
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 79, in main
+    model = build_model(args, params)
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 44, in build_model
+    x = ContextAggreation(x)
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/layers.py", line 26, in __init__
+    super(Aggregate, self).__init__()
+TypeError: super(type, obj): obj must be an instance or subtype of type

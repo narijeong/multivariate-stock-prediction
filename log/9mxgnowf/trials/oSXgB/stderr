@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 99, in <module>
+    main(params)
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 74, in main
+    tes_pv, tes_wd, tes_gt = load_cla_data(args['path'], tra_date, val_date, tes_date, seq=args['seq'])
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/load_data.py", line 14, in load_cla_data
+    fnames.remove('SNP500.csv')
+ValueError: list.remove(x): x not in list

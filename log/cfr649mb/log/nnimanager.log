@@ -1,0 +1,74 @@
+[2022-08-12 12:31:55] INFO (main) Start NNI manager
+[2022-08-12 12:31:56] INFO (NNIDataStore) Datastore initialization done
+[2022-08-12 12:31:56] INFO (RestServer) Starting REST server at port 8080, URL prefix: "/"
+[2022-08-12 12:31:56] INFO (RestServer) REST server started.
+[2022-08-12 12:31:56] ERROR (NNIRestHandler) TypeError: Cannot read properties of undefined (reading 'id')
+    at /Users/narijeong/opt/anaconda3/envs/ml/lib/python3.9/site-packages/nni_node/rest_server/restHandler.js:312:45
+    at processTicksAndRejections (node:internal/process/task_queues:96:5)
+[2022-08-12 12:31:56] INFO (NNIManager) Starting experiment: cfr649mb
+[2022-08-12 12:31:56] INFO (NNIManager) Setup training service...
+[2022-08-12 12:31:56] INFO (LocalTrainingService) Construct local machine training service.
+[2022-08-12 12:31:56] INFO (NNIManager) Setup tuner...
+[2022-08-12 12:31:56] INFO (NNIManager) Change NNIManager status from: INITIALIZED to: RUNNING
+[2022-08-12 12:31:57] INFO (NNIManager) Add event listeners
+[2022-08-12 12:31:57] INFO (LocalTrainingService) Run local machine training service.
+[2022-08-12 12:31:57] INFO (NNIManager) NNIManager received command from dispatcher: ID, 
+[2022-08-12 12:31:57] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-12 12:31:57] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-12 12:32:02] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 0,
+  hyperParameters: {
+    value: '{"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 12:32:02] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 1,
+  hyperParameters: {
+    value: '{"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 12:32:12] INFO (NNIManager) Trial job IMtVt status changed from WAITING to RUNNING
+[2022-08-12 12:32:12] INFO (NNIManager) Trial job ZVrBv status changed from WAITING to RUNNING
+[2022-08-12 12:32:27] INFO (NNIManager) Trial job IMtVt status changed from RUNNING to SUCCEEDED
+[2022-08-12 12:32:27] INFO (NNIManager) Trial job ZVrBv status changed from RUNNING to SUCCEEDED
+[2022-08-12 12:32:27] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 2, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-12 12:32:27] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 3, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-12 12:32:32] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 2,
+  hyperParameters: {
+    value: '{"parameter_id": 2, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 12:32:32] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 3,
+  hyperParameters: {
+    value: '{"parameter_id": 3, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 12:32:37] INFO (NNIManager) Trial job bRol9 status changed from WAITING to RUNNING
+[2022-08-12 12:32:37] INFO (NNIManager) Trial job kOzCx status changed from WAITING to RUNNING
+[2022-08-12 12:32:47] INFO (NNIManager) Trial job bRol9 status changed from RUNNING to SUCCEEDED
+[2022-08-12 12:32:47] INFO (NNIManager) NNIManager received command from dispatcher: NO, {"parameter_id": 4, "parameter_source": "algorithm", "parameters": "", "parameter_index": 0}
+[2022-08-12 12:32:47] INFO (NNIManager) Change NNIManager status from: RUNNING to: TUNER_NO_MORE_TRIAL
+[2022-08-12 12:32:52] INFO (NNIManager) Trial job kOzCx status changed from RUNNING to SUCCEEDED
+[2022-08-12 12:32:52] INFO (NNIManager) NNIManager received command from dispatcher: NO, {"parameter_id": 5, "parameter_source": "algorithm", "parameters": "", "parameter_index": 0}
+[2022-08-12 12:56:32] INFO (ShutdownManager) Initiate shutdown: SIGTERM
+[2022-08-12 12:56:32] INFO (RestServer) Stopping REST server.
+[2022-08-12 12:56:32] INFO (NNIManager) Change NNIManager status from: TUNER_NO_MORE_TRIAL to: STOPPING
+[2022-08-12 12:56:32] INFO (NNIManager) Stopping experiment, cleaning up ...
+[2022-08-12 12:56:32] INFO (RestServer) REST server stopped.
+[2022-08-12 12:56:33] INFO (LocalTrainingService) Stopping local machine training service...
+[2022-08-12 12:56:33] INFO (NNIManager) Change NNIManager status from: STOPPING to: STOPPED
+[2022-08-12 12:56:33] INFO (NNIManager) Experiment stopped.
+[2022-08-12 12:56:33] INFO (NNITensorboardManager) Forced stopping all tensorboard task.
+[2022-08-12 12:56:33] INFO (NNITensorboardManager) All tensorboard task stopped.
+[2022-08-12 12:56:33] INFO (NNITensorboardManager) Tensorboard manager stopped.
+[2022-08-12 12:56:33] INFO (ShutdownManager) Shutdown complete.

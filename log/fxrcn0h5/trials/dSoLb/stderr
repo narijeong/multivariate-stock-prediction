@@ -1,0 +1,17 @@
+2022-08-12 12:57:24.765977: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2022-08-12 12:57:27.646200: W tensorflow/core/grappler/costs/op_level_cost_estimator.cc:690] Error in PredictCost() for the op: op: "Softmax" attr { key: "T" value { type: DT_FLOAT } } inputs { dtype: DT_FLOAT shape { unknown_rank: true } } device { type: "CPU" vendor: "GenuineIntel" model: "110" frequency: 2600 num_cores: 12 environment { key: "cpu_instruction_set" value: "SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2" } environment { key: "eigen" value: "3.4.90" } l1_cache_size: 32768 l2_cache_size: 262144 l3_cache_size: 12582912 memory_size: 268435456 } outputs { dtype: DT_FLOAT shape { unknown_rank: true } }
+2022-08-12 12:57:31.389955: W tensorflow/core/grappler/costs/op_level_cost_estimator.cc:690] Error in PredictCost() for the op: op: "Softmax" attr { key: "T" value { type: DT_FLOAT } } inputs { dtype: DT_FLOAT shape { unknown_rank: true } } device { type: "CPU" vendor: "GenuineIntel" model: "110" frequency: 2600 num_cores: 12 environment { key: "cpu_instruction_set" value: "SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2" } environment { key: "eigen" value: "3.4.90" } l1_cache_size: 32768 l2_cache_size: 262144 l3_cache_size: 12582912 memory_size: 268435456 } outputs { dtype: DT_FLOAT shape { unknown_rank: true } }
+2022-08-12 12:57:32.301452: W tensorflow/core/grappler/costs/op_level_cost_estimator.cc:690] Error in PredictCost() for the op: op: "Softmax" attr { key: "T" value { type: DT_FLOAT } } inputs { dtype: DT_FLOAT shape { unknown_rank: true } } device { type: "CPU" vendor: "GenuineIntel" model: "110" frequency: 2600 num_cores: 12 environment { key: "cpu_instruction_set" value: "SSE, SSE2, SSE3, SSSE3, SSE4.1, SSE4.2" } environment { key: "eigen" value: "3.4.90" } l1_cache_size: 32768 l2_cache_size: 262144 l3_cache_size: 12582912 memory_size: 268435456 } outputs { dtype: DT_FLOAT shape { unknown_rank: true } }
+Traceback (most recent call last):
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 98, in <module>
+    main(params)
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 84, in main
+    pd.DataFrame(pred_gt).to_csv("./output/prediction.csv")
+  File "/Users/narijeong/opt/anaconda3/envs/ml/lib/python3.9/site-packages/pandas/core/frame.py", line 694, in __init__
+    mgr = ndarray_to_mgr(
+  File "/Users/narijeong/opt/anaconda3/envs/ml/lib/python3.9/site-packages/pandas/core/internals/construction.py", line 331, in ndarray_to_mgr
+    values = _prep_ndarray(values, copy=copy_on_sanitize)
+  File "/Users/narijeong/opt/anaconda3/envs/ml/lib/python3.9/site-packages/pandas/core/internals/construction.py", line 591, in _prep_ndarray
+    raise ValueError(f"Must pass 2-d input. shape={values.shape}")
+ValueError: Must pass 2-d input. shape=(252, 50, 1)

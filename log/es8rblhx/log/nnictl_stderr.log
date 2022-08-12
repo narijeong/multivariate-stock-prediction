@@ -1,0 +1,9 @@
+--------------------------------------------------------------------------------
+Experiment es8rblhx start: 2022-08-12 15:50:12.898001
+--------------------------------------------------------------------------------
+[Error: SQLITE_READONLY: attempt to write a readonly database] {
+  cause: [Error: SQLITE_READONLY: attempt to write a readonly database] {
+    errno: 8,
+    code: 'SQLITE_READONLY'
+  }
+}

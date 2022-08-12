@@ -1,0 +1,32 @@
+[2022-08-12 23:36:12] INFO (main) Start NNI manager
+[2022-08-12 23:36:12] INFO (NNIDataStore) Datastore initialization done
+[2022-08-12 23:36:12] INFO (RestServer) Starting REST server at port 8080, URL prefix: "/"
+[2022-08-12 23:36:12] INFO (RestServer) REST server started.
+[2022-08-12 23:36:12] INFO (NNIManager) Starting experiment: 3osnhrgb
+[2022-08-12 23:36:12] INFO (NNIManager) Setup training service...
+[2022-08-12 23:36:12] INFO (LocalTrainingService) Construct local machine training service.
+[2022-08-12 23:36:12] INFO (NNIManager) Setup tuner...
+[2022-08-12 23:36:12] INFO (NNIManager) Change NNIManager status from: INITIALIZED to: RUNNING
+[2022-08-12 23:36:14] INFO (NNIManager) Add event listeners
+[2022-08-12 23:36:14] INFO (LocalTrainingService) Run local machine training service.
+[2022-08-12 23:36:14] INFO (NNIManager) NNIManager received command from dispatcher: ID, 
+[2022-08-12 23:36:14] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}
+[2022-08-12 23:36:14] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}
+[2022-08-12 23:36:19] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 0,
+  hyperParameters: {
+    value: '{"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 23:36:19] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 1,
+  hyperParameters: {
+    value: '{"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/preprocessed/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-12 23:36:29] INFO (NNIManager) Trial job rmIDA status changed from WAITING to RUNNING
+[2022-08-12 23:36:29] INFO (NNIManager) Trial job GhS17 status changed from WAITING to RUNNING

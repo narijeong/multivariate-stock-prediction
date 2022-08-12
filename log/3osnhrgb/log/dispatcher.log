@@ -1,0 +1,2 @@
+[2022-08-12 23:36:13] INFO (nni.tuner.tpe/MainThread) Using random seed 618372635
+[2022-08-12 23:36:14] INFO (nni.runtime.msg_dispatcher_base/MainThread) Dispatcher started

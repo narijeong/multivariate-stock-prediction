@@ -1,0 +1,29 @@
+search_space:
+  batch_size: 
+    _type: choice
+    _value: [ 256, 512 ]
+  epochs: 
+    _type: choice
+    _value: [ 1,  2 ]
+  seq: 
+    _type: choice
+    _value: [ 15 ]
+  path: 
+    _type: choice
+    _value: [ "./data/kdd17/preprocessed/" ]  
+
+trial_command: python pred_nni.py
+trial_code_directory: .
+
+trial_concurrency: 2
+max_trial_number: 10
+
+tuner:
+  name: TPE
+  class_args:
+    optimize_mode: maximize
+
+training_service:
+  platform: local
+
+experimentWorkingDirectory: ./log

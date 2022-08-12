@@ -1,0 +1,59 @@
+[2022-08-09 14:54:56] INFO (main) Start NNI manager
+[2022-08-09 14:54:56] INFO (NNIDataStore) Datastore initialization done
+[2022-08-09 14:54:56] INFO (RestServer) Starting REST server at port 8080, URL prefix: "/"
+[2022-08-09 14:54:56] INFO (RestServer) REST server started.
+[2022-08-09 14:54:57] INFO (NNIManager) Starting experiment: gmdyu6k1
+[2022-08-09 14:54:57] INFO (NNIManager) Setup training service...
+[2022-08-09 14:54:57] INFO (LocalTrainingService) Construct local machine training service.
+[2022-08-09 14:54:57] INFO (NNIManager) Setup tuner...
+[2022-08-09 14:54:57] INFO (NNIManager) Change NNIManager status from: INITIALIZED to: RUNNING
+[2022-08-09 14:54:57] INFO (NNIManager) Add event listeners
+[2022-08-09 14:54:57] INFO (LocalTrainingService) Run local machine training service.
+[2022-08-09 14:54:57] INFO (NNIManager) NNIManager received command from dispatcher: ID, 
+[2022-08-09 14:54:57] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-09 14:54:57] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-09 14:55:02] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 0,
+  hyperParameters: {
+    value: '{"parameter_id": 0, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-09 14:55:02] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 1,
+  hyperParameters: {
+    value: '{"parameter_id": 1, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-09 14:55:12] INFO (NNIManager) Trial job f8ZL5 status changed from WAITING to RUNNING
+[2022-08-09 14:55:12] INFO (NNIManager) Trial job uXyz9 status changed from WAITING to RUNNING
+[2022-08-09 14:55:28] INFO (NNIManager) Trial job f8ZL5 status changed from RUNNING to SUCCEEDED
+[2022-08-09 14:55:28] INFO (NNIManager) Trial job uXyz9 status changed from RUNNING to SUCCEEDED
+[2022-08-09 14:55:28] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 2, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-09 14:55:28] INFO (NNIManager) NNIManager received command from dispatcher: TR, {"parameter_id": 3, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}
+[2022-08-09 14:55:33] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 2,
+  hyperParameters: {
+    value: '{"parameter_id": 2, "parameter_source": "algorithm", "parameters": {"batch_size": 256, "epochs": 2, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-09 14:55:33] INFO (NNIManager) submitTrialJob: form: {
+  sequenceId: 3,
+  hyperParameters: {
+    value: '{"parameter_id": 3, "parameter_source": "algorithm", "parameters": {"batch_size": 512, "epochs": 1, "seq": 15, "path": "./data/kdd17/ourpped/"}, "parameter_index": 0}',
+    index: 0
+  },
+  placementConstraint: { type: 'None', gpus: [] }
+}
+[2022-08-09 14:55:43] INFO (NNIManager) Trial job EKCg6 status changed from WAITING to RUNNING
+[2022-08-09 14:55:43] INFO (NNIManager) Trial job hO4ry status changed from WAITING to RUNNING
+[2022-08-09 14:55:53] INFO (NNIManager) Trial job hO4ry status changed from RUNNING to SUCCEEDED
+[2022-08-09 14:55:53] INFO (NNIManager) NNIManager received command from dispatcher: NO, {"parameter_id": 4, "parameter_source": "algorithm", "parameters": "", "parameter_index": 0}
+[2022-08-09 14:55:53] INFO (NNIManager) Change NNIManager status from: RUNNING to: TUNER_NO_MORE_TRIAL
+[2022-08-09 14:55:58] INFO (NNIManager) Trial job EKCg6 status changed from RUNNING to SUCCEEDED
+[2022-08-09 14:55:58] INFO (NNIManager) NNIManager received command from dispatcher: NO, {"parameter_id": 5, "parameter_source": "algorithm", "parameters": "", "parameter_index": 0}

@@ -1,6 +1,7 @@
 from datetime import datetime
 import numpy as np
 import os
+import pandas as pd
 
 # return data in form (batch size, num stocks, time_steps, feature_size)
 def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
@@ -12,6 +13,7 @@ def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
     
     fnames.remove('SNP500.csv')
     fnames.insert(0, 'SNP500.csv')
+    print(fnames)
 
     data_EOD = []
     for index, fname in enumerate(fnames):
@@ -22,6 +24,7 @@ def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
         )
         # print('data shape:', single_EOD.shape)
         data_EOD.append(single_EOD)
+
     fea_dim = data_EOD[0].shape[1] - 2
 
     trading_dates = np.genfromtxt(
@@ -47,44 +50,28 @@ def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
     print('tra, val, tes index: ', tra_ind, val_ind, tes_ind)
 
     # count training, validation, and testing instances
-    tra_num = 0
-    val_num = 0
-    tes_num = 0
-    # training
-    for date_ind in range(tra_ind, val_ind):
-        # filter out instances without length enough history
-        if date_ind < seq:
-            continue
-        for tic_ind in range(len(fnames)):
-            if data_EOD[tic_ind][date_ind - seq: date_ind, :].min() > -123320:
-                tra_num += 1
+    def count_instances(start_ind, end_ind):
+        num = 0
+        for date_ind in range(start_ind, end_ind):
+            # filter out instances without length enough history
+            if date_ind < seq:
+                continue
+            # for tic_ind in range(len(fnames)):
+            if data_EOD[0][date_ind - seq: date_ind, :].min() > -123320:
+                num += 1
+        return num
+    tra_num = count_instances(tra_ind, val_ind)
+    val_num = count_instances(val_ind, tes_ind)
+    tes_num = count_instances(tes_ind, len(trading_dates))
     print(tra_num, ' training instances')
-
-    # validation
-    for date_ind in range(val_ind, tes_ind):
-        # filter out instances without length enough history
-        if date_ind < seq:
-            continue
-        for tic_ind in range(len(fnames)):
-            if data_EOD[tic_ind][date_ind - seq: date_ind, :].min() > -123320:
-                val_num += 1
-    print(val_num, ' validation instances')
-
-    # testing
-    for date_ind in range(tes_ind, len(trading_dates)):
-        # filter out instances without length enough history
-        if date_ind < seq:
-            continue
-        for tic_ind in range(len(fnames)):
-            if data_EOD[tic_ind][date_ind - seq: date_ind, :].min() > -123320:
-                tes_num += 1
+    print(val_num, ' validaing instances')
     print(tes_num, ' testing instances')
 
     # generate training, validation, and testing instances
     # training
     tra_pv = np.zeros([tra_num, ticker_num, seq, fea_dim], dtype=float)
     tra_wd = np.zeros([tra_num, seq, 5], dtype=float)
-    tra_gt = np.zeros([tra_num, ticker_num-1], dtype=float)
+    tra_gt = np.zeros([tra_num, ticker_num - 1], dtype=float)
     ins_ind = 0
     for date_ind in range(tra_ind, val_ind):
         # filter out instances without length enough history
@@ -92,11 +79,12 @@ def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
             continue
         for tic_ind in range(len(fnames)):
             if data_EOD[tic_ind][date_ind - seq: date_ind, :].min() > -123320:
-                tra_pv[ins_ind][tic_ind] = data_EOD[tic_ind][date_ind - seq: date_ind, : -2]
+                tra_pv[ins_ind, tic_ind] = data_EOD[tic_ind][date_ind - seq: date_ind, : -2]
                 tra_wd[ins_ind] = data_wd[date_ind - seq: date_ind, :]
                 if tic_ind != 0:
-                    tra_gt[ins_ind, tic_ind-1] = data_EOD[tic_ind][date_ind][-2]
-                ins_ind += 1
+                    tra_gt[ins_ind, tic_ind-1] = (data_EOD[tic_ind][date_ind][-2] + 1) // 2
+        if data_EOD[tic_ind][date_ind - seq: date_ind, :].min() > -123320:
+            ins_ind += 1
 
     # validation
     val_pv = np.zeros([val_num, ticker_num, seq, fea_dim], dtype=float)
@@ -112,9 +100,10 @@ def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
                 val_pv[ins_ind][tic_ind] = data_EOD[tic_ind][date_ind - seq: date_ind, :-2]
                 val_wd[ins_ind] = data_wd[date_ind - seq: date_ind, :]
                 if tic_ind != 0:
-                    val_gt[ins_ind, tic_ind-1] = data_EOD[tic_ind][date_ind][-2]
-                ins_ind += 1
-
+                    val_gt[ins_ind, tic_ind-1] = (data_EOD[tic_ind][date_ind][-2] + 1) // 2
+        if data_EOD[tic_ind][date_ind - seq: date_ind, :].min() > -123320:
+            ins_ind += 1
+    
     # testing
     tes_pv = np.zeros([tes_num, ticker_num, seq, fea_dim], dtype=float)
     tes_wd = np.zeros([tes_num, seq, 5], dtype=float)
@@ -131,21 +120,45 @@ def load_cla_data(data_path, tra_date, val_date, tes_date, seq=2,
                 # tes_pv[ins_ind, -1, -1] = data_EOD[tic_ind][date_ind - 1, -1] - data_EOD[tic_ind][date_ind - 11, -1]
                 tes_wd[ins_ind] = data_wd[date_ind - seq: date_ind, :]
                 if tic_ind != 0:
-                    tes_gt[ins_ind, tic_ind-1] = data_EOD[tic_ind][date_ind][-2]
-                ins_ind += 1        
-
+                    tes_gt[ins_ind, tic_ind-1] = (data_EOD[tic_ind][date_ind][-2] + 1) // 2
+        if data_EOD[tic_ind][date_ind - seq: date_ind, :].min() > -123320:
+            ins_ind += 1
+    print(tra_pv)
+    print(tra_gt)
+    # pd.DataFrame(np.squeeze(tra_gt)).to_csv("./output/prediction.csv")
     return tra_pv, tra_wd, tra_gt, val_pv, val_wd, val_gt, tes_pv, tes_wd, tes_gt
 
 if __name__ == '__main__':
     # TEST
-    _, _, tra_gt, _, _, val_gt, _, _, tes_gt = load_cla_data(
+    tra_pv, _, tra_gt, _, _, val_gt, _, _, tes_gt = load_cla_data(
         './data/kdd17/ourpped/',
         '2007-01-03', '2015-01-02', '2016-01-04'
     )
+    print('tra_pv', tra_pv.shape)
+    print('tra_gt', tra_gt.shape)
+    print(np.unique(tra_gt))
+    print(tes_gt.shape)
     print(np.sum(tra_gt))
     print(np.sum(val_gt))
     print(np.sum(tes_gt))
     print(np.sum(tes_gt) / 3720)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
 # return data in form (batch size, time_steps, feature_size)
 def load_cla_data2(data_path, tra_date, val_date, tes_date, seq=2,
@@ -260,14 +273,3 @@ def load_cla_data2(data_path, tra_date, val_date, tes_date, seq=2,
                 ins_ind += 1
 
     return tra_pv, tra_wd, tra_gt, val_pv, val_wd, val_gt, tes_pv, tes_wd, tes_gt
-
-if __name__ == '__main__':
-    # TEST
-    _, _, tra_gt, _, _, val_gt, _, _, tes_gt = load_cla_data(
-        './data/kdd17/ourpped/',
-        '2007-01-03', '2015-01-02', '2016-01-04'
-    )
-    print(np.sum(tra_gt))
-    print(np.sum(val_gt))
-    print(np.sum(tes_gt))
-    print(np.sum(tes_gt) / 3720)

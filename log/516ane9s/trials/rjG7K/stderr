@@ -1,0 +1,14 @@
+2022-08-12 12:17:13.839838: I tensorflow/core/platform/cpu_feature_guard.cc:193] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Traceback (most recent call last):
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 96, in <module>
+    main(params)
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 79, in main
+    model = build_model(args, params)
+  File "/Users/narijeong/Dev/stock-prediction-with-context2/pred_nni.py", line 56, in build_model
+    x = layers.LayerNormalization(x)
+  File "/Users/narijeong/opt/anaconda3/envs/ml/lib/python3.9/site-packages/keras/dtensor/utils.py", line 95, in _wrap_function
+    init_method(layer_instance, *args, **kwargs)
+  File "/Users/narijeong/opt/anaconda3/envs/ml/lib/python3.9/site-packages/keras/layers/normalization/layer_normalization.py", line 172, in __init__
+    raise TypeError('Expected an int or a list/tuple of ints for the '
+TypeError: Expected an int or a list/tuple of ints for the argument 'axis', but received: <KerasTensor: shape=(None, 50, 11) dtype=float32 (created by layer 'tf.math.tanh')>
